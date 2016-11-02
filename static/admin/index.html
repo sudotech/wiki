@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8" />
+        <title>{{.mdname}}</title>
+        <link rel="stylesheet" href="../resources/css/style.css" type="text/css" />
+        <link rel="stylesheet" href="../resources/css/editormd.css" type="text/css" />   
+        <link rel="shortcut icon" href="http://app.gomein.net.cn/favicon.ico" type="image/x-icon" />  
+		<style type="text/css">
+		  body,html{ font-size:12px; margin:0px; padding:0px; height:100%; width:100%; overflow:hidden;}
+		  #Prompt{ border:1px solid #963; background-color:#C33; color:#FFF; width:120px; height:30px; padding:5px; position:absolute; right:0px; bottom:0px; z-index:100;
+		  opacity:0; filter:alpha(opacity=0);}
+		</style>
+		<script src="../resources/js/jquery.min.js"></script>
+        <script src="../resources/js/core/editormd.min.js"></script>  
+		<script type="text/javascript">
+			var mdEditor;
+			//加载md文件       
+            $(function() {
+				console.log("dom 加载完成");
+                $.get('../md/{{.mdfile}}', function(md){
+                    mdEditor = editormd("vim-editormd", {
+                        width: "100%",
+                        height: 800,
+                        path : '../resources/js/lib/',
+                        theme : "dark",
+                        previewTheme : "dark",
+                        editorTheme : "pastel-on-dark",
+                        markdown : md,
+                        codeFold : true,
+                        //syncScrolling : false,
+                        saveHTMLToTextarea : true,    // 保存 HTML 到 Textarea
+                        searchReplace : true,
+                        //watch : false,                // 关闭实时预览
+                        htmlDecode : "style,script,iframe|on*",            // 开启 HTML 标签解析，为了安全性，默认不开启    
+                        //toolbar  : false,             //关闭工具栏
+                        //previewCodeHighlight : false, // 关闭预览 HTML 的代码块高亮，默认开启
+                        emoji : true,
+                        taskList : true,
+                        tocm            : true,         // Using [TOCM]
+                        tex : true,                   // 开启科学公式TeX语言支持，默认关闭
+                        flowChart : true,             // 开启流程图支持，默认关闭
+                        sequenceDiagram : true,       // 开启时序/序列图支持，默认关闭,
+                        //dialogLockScreen : false,   // 设置弹出层对话框不锁屏，全局通用，默认为true
+                        //dialogShowMask : false,     // 设置弹出层对话框显示透明遮罩层，全局通用，默认为true
+                        //dialogDraggable : false,    // 设置弹出层对话框不可拖动，全局通用，默认为true
+                        //dialogMaskOpacity : 0.4,    // 设置透明遮罩层的透明度，全局通用，默认值为0.1
+                        //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
+                        imageUpload : true,
+                        imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                        imageUploadURL : "uploadfile/",
+                        onload : function() {
+                            //console.log('onload', this);
+                            this.fullscreen();
+                            //this.unwatch();
+                            //this.watch().fullscreen();
+
+                            //this.setMarkdown("#PHP");
+                            //this.width("100%");
+                            //this.height(480);
+                            this.resize("100%", 640);
+                        }
+                    });
+                });
+            });
+			
+			var isready = true;
+			// ctrl + s监听事件
+			$(document).keydown(function(e){
+				// ctrl + s
+				if( e.ctrlKey  == true && e.keyCode == 83 ){
+					console.log('ctrl+s');
+					if(isready)
+					{
+						//将isready设置成false
+						isready = false;
+						//发送数据到后台进行文件保存
+						var mdstring = mdEditor.getMarkdown();
+						var htmlstring = mdEditor.getHTML();
+						 $.post("/admin/savefile/",{mdstr:mdstring,htmlstr:htmlstring,filename:{{.mdname}}},
+						  function(data,status){
+							if(status=="success")
+							{
+								var div = $("<div id='Prompt'> 骚年保存成功... </div>");
+								$("body").append(div);
+								div.css({bottom:'0'});
+							  	   setTimeout(function(){
+									  div.animate({bottom:'100',opacity:'1'},500);
+								   },100);
+								   setTimeout(function(){
+									   div.animate({bottom:'200',opacity:'0'},500,function(){
+										//元素消失
+										div.remove();
+									})
+								   },800)
+							}
+							isready = true;
+						  });
+					}
+					return false; // 截取返回false就不会保存网页了
+				}
+			});
+			
+        </script>
+    </head>
+    <body>
+        <div id="layout">
+            <div id="vim-editormd"></div>
+        </div>
+    </body>
+</html>

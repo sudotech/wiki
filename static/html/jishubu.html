@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8" />
+        <title>jishubu</title>
+		<link rel="stylesheet" href="../resources/css/ncEditormdView.css" />
+		<link rel="stylesheet" href="../resources/css/editormd.preview.css" />
+
+    </head>
+    <body>
+	<a href="../" target="_blank" >欢迎新同学</a> | <a href="index.html" target="_blank" >首页</a> | <a href="/admin/?file=jishubu" target="_blank" >编辑</a> | <a href="help.html" target="_blank" >帮助</a>
+        <div id="layout">
+            <div id="sidebar">
+                <h1>目录</h1>
+                <div class="markdown-body editormd-preview-container" id="custom-toc-container">#custom-toc-container</div>
+            </div>
+            <div id="txtMdSourceView">
+                <textarea id="txtMdSource" style="display:none;">#net
+恭喜你进入技术部
+
+![](http://127.0.0.1:8000/upload/1477666848791.jpg)
+
+![](http://127.0.0.1:8000/upload/1477668137.jpg)
+![](http://127.0.0.1:8000/upload/1477668151.jpg)
+
+
+![](http://127.0.0.1:8000/upload/1477668171.png)
+
+
+
+
+</textarea>          
+            </div>
+        </div>
+		<script src="../resources/js/jquery.min.js"></script>
+		<script src="../resources/js/lib/marked.min.js"></script>
+		<script src="../resources/js/lib/prettify.min.js"></script>
+		<script src="../resources/js/lib/raphael.min.js"></script>
+		<script src="../resources/js/lib/underscore.min.js"></script>
+		<script src="../resources/js/lib/sequence-diagram.min.js"></script>
+		<script src="../resources/js/lib/flowchart.min.js"></script>
+		<script src="../resources/js/lib/jquery.flowchart.min.js"></script>
+		<script src="../resources/js/core/editormd.min.js"></script>
+		<script type="text/javascript">
+           $(function() {
+                var testEditormdView, testEditormdView2;
+                 
+	testEditormdView = editormd.markdownToHTML("txtMdSourceView", {
+                        markdown        : $("#txtMdSource").text(),
+                        htmlDecode      : "style,script,iframe",  // you can filter tags decode
+                        tocm            : true,    // Using [TOCM]
+                        tocContainer    : "#custom-toc-container", // 自定义 ToC 容器层
+                        emoji           : true,
+                        taskList        : true,
+                        tex             : true,  // 默认不解析
+                        flowChart       : true,  // 默认不解析
+                        sequenceDiagram : true,  // 默认不解析
+                    }); 
+					console.log(testEditormdView);
+            });
+        </script>
+    </body>
+</html>

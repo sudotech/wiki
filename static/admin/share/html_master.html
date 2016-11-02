@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8" />
+        <title>{{.mdtitle}}</title>
+		<link rel="stylesheet" href="../resources/css/ncEditormdView.css" />
+		<link rel="stylesheet" href="../resources/css/editormd.preview.css" />
+
+    </head>
+    <body>
+	<a href="admin/" >首页</a> | <a href="/admin?path={{.mdfile}}" >编辑</a> | <a href="help.html" >帮助</a>
+        <div id="layout">
+            <div id="sidebar">
+                <h1>目录</h1>
+                <div class="markdown-body editormd-preview-container" id="custom-toc-container">#custom-toc-container</div>
+            </div>
+            <div id="txtMdSourceView">
+                <textarea id="txtMdSource" style="display:none;">
+				{{.mdhtml}}
+				</textarea>          
+            </div>
+        </div>
+		<script src="../resources/js/jquery.min.js"></script>
+		<script src="../resources/js/lib/marked.min.js"></script>
+		<script src="../resources/js/lib/prettify.min.js"></script>
+		<script src="../resources/js/lib/raphael.min.js"></script>
+		<script src="../resources/js/lib/underscore.min.js"></script>
+		<script src="../resources/js/lib/sequence-diagram.min.js"></script>
+		<script src="../resources/js/lib/flowchart.min.js"></script>
+		<script src="../resources/js/lib/jquery.flowchart.min.js"></script>
+		<script src="../resources/js/core/editormd.min.js"></script>
+            $(function() {
+                var testEditormdView, testEditormdView2;
+                 
+	testEditormdView = editormd.markdownToHTML("txtMdSourceView", {
+                        markdown        : $("#txtMdSource").text(),
+                        htmlDecode      : "style,script,iframe",  // you can filter tags decode
+                        tocm            : true,    // Using [TOCM]
+                        tocContainer    : "#custom-toc-container", //
+                        emoji           : true,
+                        taskList        : true,
+                        tex             : true,  
+                        flowChart       : true, 
+                        sequenceDiagram : true, 
+                    }); 
+            });
+        </script>
+    </body>
+</html>
